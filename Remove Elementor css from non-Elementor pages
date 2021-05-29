@@ -1,0 +1,24 @@
+/**
+ * Remove Elementor css from non-Elementor pages
+ */
+add_filter( 'body_class', 'custom_body_classes', 90,1);
+function custom_body_classes( $classes ){
+ 
+    # get template filename
+    $template_url = get_page_template();
+    $template_url_array = explode('/',$template_url);
+    $template_file = end($template_url_array);
+ 
+    # Elementor is using my page.php tempalte file, which I'm never using for non-Elementor pages
+    if( $template_file != "page.php" ) { // if NOT elementor
+ 
+        foreach ($classes as $classname) {
+            if ($classname != "elementor-kit-695"){ // Elementor adds this class to all, verify the "695" number!
+                $classes_2[] = $classname; // build new array that excludes Elementor's class
+            }
+        }
+        return $classes_2;
+    }
+ 
+  return $classes;
+}
